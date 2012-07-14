@@ -157,7 +157,8 @@ service "jenkins" do
   action :nothing
 end
 
-if node.platform == "ubuntu"
+case node.platform
+when "ubuntu", "debian"
   execute "setup-jenkins" do
     command "echo w00t"
     notifies :stop, "service[jenkins]", :immediately
