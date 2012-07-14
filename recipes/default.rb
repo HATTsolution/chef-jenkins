@@ -91,6 +91,7 @@ when "ubuntu", "debian"
     components [""]
     key "http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key"
     action :add
+    notifies :run, resources(:execute => "apt-get-update"), :immediately
   end
 
   pid_file = "/var/run/jenkins/jenkins.pid"
