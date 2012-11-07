@@ -22,6 +22,8 @@
 #
 
 def action_run
+  Chef::Log.debug("[jenkins_cli] #{@new_resource.inspect}")
+
   url = @new_resource.url || node[:jenkins][:server][:url]
   home = @new_resource.home || node[:jenkins][:node][:home]
 
@@ -44,10 +46,14 @@ def action_run
     java = ::File.join(java_home, "bin", "java")
   end
 
+
   command = "#{java} -jar #{cli_jar} -s #{url} #{@new_resource.command}"
+
+  Chef::Log.debug("[jenkins_cli] #{command}")
 
   jenkins_execute command do
     cwd home
     block { |stdout| new_resource.block.call(stdout) } if new_resource.block
+    #only_if new_resource.only_if
   end
 end
